@@ -52,7 +52,6 @@ class Engrave {
         allItems.push(pageData.Items);
       });
 
-      console.log(allItems);
       return allItems;
     } catch (error) {
       console.error(`아이템 로드 중 오류 발생: ${error}`);
