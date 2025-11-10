@@ -30,27 +30,32 @@ class Engrave {
 
   async getMarketData() {
     try {
-      const allItems = [];
-
       // 총 페이지 계산을 위한 첫 번째 페이지 데이터 불러오기
       const firstPageData = await this.#getMarketDataByPage(1);
-      allItems.push(firstPageData.Items);
 
       const totalCount = firstPageData.TotalCount;
       const pageSize = firstPageData.PageSize;
       const totalPages = Math.ceil(totalCount / pageSize);
 
+      const allItems = firstPageData.Items;
+
+      const promiseArray = [];
       if (totalPages > 1) {
         for (let currentPage = 2; currentPage <= totalPages; currentPage++) {
-          const pageData = await this.#getMarketDataByPage(currentPage);
-
-          allItems.push(pageData.Items);
+          promiseArray.push(this.#getMarketDataByPage(currentPage));
         }
       }
 
+      const remainingPagesData = await Promise.all(promiseArray);
+
+      remainingPagesData.forEach((pageData) => {
+        allItems.push(pageData.Items);
+      });
+
+      console.log(allItems);
       return allItems;
     } catch (error) {
-      console.error("아이템 로드 중 오류 발생:", error);
+      console.error(`아이템 로드 중 오류 발생: ${error}`);
     }
   }
 }
