@@ -1,6 +1,7 @@
 import express from "express";
 import { engrave } from "./engrave/engrave.js";
 import { jewel } from "./jewel/jewel.js";
+import { gem } from "./gem/gem.js";
 
 const app = express();
 
@@ -15,3 +16,5 @@ engrave.getMarketData();
 
 jewel.getBlazingJewelData();
 jewel.getDoomfireJewelData();
+
+gem.getGemData();

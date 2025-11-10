@@ -34,7 +34,7 @@ class Jewel {
 
       const jewelData = await Promise.all(jewelPromiseArray);
 
-      console.log(jewelData);
+      return jewelData;
     } catch (error) {
       console.error(`아이템 로드 중 오류 발생: ${error}`);
     }
@@ -49,7 +49,6 @@ class Jewel {
 
       const jewelData = await Promise.all(jewelPromiseArray);
 
-      console.log(jewelData);
       return jewelData;
     } catch (error) {
       console.error(`아이템 로드 중 오류 발생: ${error}`);
