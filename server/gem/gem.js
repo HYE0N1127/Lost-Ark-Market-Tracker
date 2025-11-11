@@ -34,11 +34,6 @@ class Gem {
 
       const gemData = await Promise.all(promiseArray);
 
-      gemData.forEach((data) => {
-        console.log(data.Items);
-      });
-
-      console.log(`gemData: ${gemData}`);
       return gemData;
     } catch (error) {
       console.error(`아이템 로드 중 오류 발생: ${error}`);
