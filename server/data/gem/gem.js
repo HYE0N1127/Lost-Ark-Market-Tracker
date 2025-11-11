@@ -1,5 +1,5 @@
-import { baseUrl } from "../constants/base-url.js";
-import { apiKey } from "../constants/key.js";
+import { baseUrl } from "../../constants/base-url.js";
+import { apiKey } from "../../constants/key.js";
 import { GemRequest } from "./request/gem.request.js";
 
 const path = "markets/items";

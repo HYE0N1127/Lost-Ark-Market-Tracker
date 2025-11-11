@@ -1,7 +1,7 @@
 import express from "express";
-import { engrave } from "./engrave/engrave.js";
-import { jewel } from "./jewel/jewel.js";
-import { gem } from "./gem/gem.js";
+import { engrave } from "./data/engrave/engrave.js";
+import { jewel } from "./data/jewel/jewel.js";
+import { gem } from "./data/gem/gem.js";
 import cron from "node-cron";
 
 const server = express();

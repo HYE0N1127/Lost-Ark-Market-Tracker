@@ -1,6 +1,9 @@
-import { baseUrl } from "../constants/base-url.js";
-import { blazingJewelArray, doomfireJewelArray } from "../constants/jewel.js";
-import { apiKey } from "../constants/key.js";
+import { baseUrl } from "../../constants/base-url.js";
+import {
+  blazingJewelArray,
+  doomfireJewelArray,
+} from "../../constants/jewel.js";
+import { apiKey } from "../../constants/key.js";
 import { JewelRequest } from "./request/jewel.request.js";
 
 const path = "auctions/items";
