@@ -28,7 +28,7 @@ class Engrave {
     return await response.json();
   }
 
-  async getMarketData() {
+  async getEngraveData() {
     try {
       // 총 페이지 계산을 위한 첫 번째 페이지 데이터 불러오기
       const firstPageData = await this.#getMarketDataByPage(1);
@@ -49,7 +49,7 @@ class Engrave {
       const remainingPagesData = await Promise.all(promiseArray);
 
       remainingPagesData.forEach((pageData) => {
-        allItems.push(pageData.Items);
+        allItems.push(...pageData.Items);
       });
 
       return allItems;

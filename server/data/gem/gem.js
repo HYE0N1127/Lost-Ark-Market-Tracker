@@ -23,21 +23,26 @@ class Gem {
     return await response.json();
   }
 
-  async getGemData() {
+  async getUncommonGemData() {
     try {
-      const gradeArray = ["고급", "희귀", "영웅"];
-      const promiseArray = [];
-
-      gradeArray.forEach((grade) => {
-        promiseArray.push(this.#getGemDataByGrade(grade));
-      });
-
-      const gemData = await Promise.all(promiseArray);
-
-      return gemData;
+      return await this.#getGemDataByGrade("고급");
     } catch (error) {
       console.error(`아이템 로드 중 오류 발생: ${error}`);
     }
+  }
+
+  async getRareGemData() {
+    try {
+      return await this.#getGemDataByGrade("희귀");
+    } catch (error) {
+      console.error(`아이템 로드 중 오류 발생: ${error}`);
+    }
+  }
+
+  async getEpicGemData() {
+    try {
+      return await this.#getGemDataByGrade("영웅");
+    } catch (error) {}
   }
 }
 
