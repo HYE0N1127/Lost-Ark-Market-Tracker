@@ -1,4 +1,12 @@
 export class EngraveRequest {
+  /**
+   * @description 객체 명세
+   * sort: 아이템 정렬 순서
+   * code: 아이템 분류 코드
+   * grade: 아이템 등급 (유물)
+   * page: 아이템이 검색될 페이지(api가 pageSize = 10으로 설정되어있으나 한 등급의 젬은 6개기에 1 고정
+   * sortCondition: 가격 내림차순 혹은 오름차순(ASC, DESC)
+   */
   #sort;
   #code;
   #grade;
@@ -14,13 +22,12 @@ export class EngraveRequest {
   }
 
   get() {
-    // new RequestBodyModel() 인스턴스를 생성하여 반환합니다.
     return {
       Sort: this.#sort,
       CategoryCode: this.#code,
       ItemGrade: this.#grade,
       SortCondition: this.#sortCondition,
-      PageNo: this.#page, // API 요청에 맞게 속성 이름은 PageNo로 변경
+      PageNo: this.#page,
     };
   }
 }
