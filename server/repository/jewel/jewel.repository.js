@@ -8,7 +8,7 @@ import { JewelRequest } from "./request/jewel.request.js";
 
 const path = "auctions/items";
 
-class Jewel {
+class JewelRepository {
   async #getJewelDataByName(name) {
     const request = new JewelRequest("210000", 4, name, "ASC").get();
 
@@ -59,4 +59,4 @@ class Jewel {
   }
 }
 
-export const jewel = new Jewel();
+export const jewelRepository = new JewelRepository();

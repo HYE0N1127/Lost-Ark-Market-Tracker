@@ -1,20 +1,20 @@
-import { gem } from "../../data/gem/gem.js";
+import { gemRepository } from "../../repository/gem/gem.repository.js";
 import { getDate } from "../../utils/date.js";
-import { priceService } from "../price/price.service.js";
+import { priceRepository } from "../../repository/price/price.repository.js";
 
 class GemService {
   async getUncommonGemData() {
-    const gemData = await gem.getUncommonGemData();
+    const gemData = await gemRepository.getUncommonGemData();
     const date = getDate();
 
-    const oldPriceMap = priceService.getPriceMap("uncommonGem");
+    const oldPriceMap = priceRepository.getPriceMap("uncommonGem");
 
     const { itemList, newPriceMap } = this.#mappingGemData(
       gemData.Items,
       oldPriceMap
     );
 
-    priceService.updatePriceMap("uncommonGem", newPriceMap);
+    priceRepository.updatePriceMap("uncommonGem", newPriceMap);
 
     return {
       updateTime: date,
@@ -23,17 +23,17 @@ class GemService {
   }
 
   async getRareGemData() {
-    const gemData = await gem.getRareGemData();
+    const gemData = await gemRepository.getRareGemData();
     const date = getDate();
 
-    const oldPriceMap = priceService.getPriceMap("rareGem");
+    const oldPriceMap = priceRepository.getPriceMap("rareGem");
 
     const { itemList, newPriceMap } = this.#mappingGemData(
       gemData.Items,
       oldPriceMap
     );
 
-    priceService.updatePriceMap("rareGem", newPriceMap);
+    priceRepository.updatePriceMap("rareGem", newPriceMap);
 
     return {
       updateTime: date,
@@ -42,17 +42,17 @@ class GemService {
   }
 
   async getEpicGemData() {
-    const gemData = await gem.getEpicGemData();
+    const gemData = await gemRepository.getEpicGemData();
     const date = getDate();
 
-    const oldPriceMap = priceService.getPriceMap("epicGem");
+    const oldPriceMap = priceRepository.getPriceMap("epicGem");
 
     const { itemList, newPriceMap } = this.#mappingGemData(
       gemData.Items,
       oldPriceMap
     );
 
-    priceService.updatePriceMap("epicGem", newPriceMap);
+    priceRepository.updatePriceMap("epicGem", newPriceMap);
 
     return {
       updateTime: date,

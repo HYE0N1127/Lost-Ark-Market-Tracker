@@ -1,4 +1,4 @@
-class PriceService {
+class PriceRepository {
   /**
    * @description key 값 정의
    * 보석
@@ -45,4 +45,4 @@ class PriceService {
   }
 }
 
-export const priceService = new PriceService();
+export const priceRepository = new PriceRepository();

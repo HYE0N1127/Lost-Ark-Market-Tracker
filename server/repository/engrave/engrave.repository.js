@@ -3,7 +3,7 @@ import { EngraveRequest } from "./request/engrave.request.js";
 
 const path = "markets/items";
 
-class Engrave {
+class EngraveRepository {
   async #getMarketDataByPage(pageNo) {
     const request = new EngraveRequest(
       "CURRENT_MAX_PRICE",
@@ -59,4 +59,4 @@ class Engrave {
   }
 }
 
-export const engrave = new Engrave();
+export const engraveRepository = new EngraveRepository();

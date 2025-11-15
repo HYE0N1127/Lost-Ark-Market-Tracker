@@ -1,10 +1,10 @@
-import { jewel } from "../../data/jewel/jewel.js";
+import { jewelRepository } from "../../repository/jewel/jewel.repository.js";
+import { priceRepository } from "../../repository/price/price.repository.js";
 import { getDate } from "../../utils/date.js";
-import { priceService } from "../price/price.service.js";
 
 class JewelService {
   async getDoomfireJewelData() {
-    const jewelResult = await jewel.getDoomfireJewelData();
+    const jewelResult = await jewelRepository.getDoomfireJewelData();
     const date = getDate();
     const cheapJewelData = [];
 
@@ -13,14 +13,14 @@ class JewelService {
       cheapJewelData.push(jewelData.Items[0]);
     });
 
-    const oldPriceMap = priceService.getPriceMap("doomfire");
+    const oldPriceMap = priceRepository.getPriceMap("doomfire");
 
     const { itemList, newPriceMap } = this.#mappingJewelData(
       cheapJewelData,
       oldPriceMap
     );
 
-    priceService.updatePriceMap("doomfire", newPriceMap);
+    priceRepository.updatePriceMap("doomfire", newPriceMap);
 
     return {
       updateTime: date,
@@ -29,7 +29,7 @@ class JewelService {
   }
 
   async getBlazingJewelData() {
-    const jewelResult = await jewel.getBlazingJewelData();
+    const jewelResult = await jewelRepository.getBlazingJewelData();
     const date = getDate();
     const cheapJewelData = [];
 
@@ -37,14 +37,14 @@ class JewelService {
       cheapJewelData.push(jewelData.Items[0]);
     });
 
-    const oldPriceMap = priceService.getPriceMap("blazing");
+    const oldPriceMap = priceRepository.getPriceMap("blazing");
 
     const { itemList, newPriceMap } = this.#mappingJewelData(
       cheapJewelData,
       oldPriceMap
     );
 
-    priceService.updatePriceMap("blazing", newPriceMap);
+    priceRepository.updatePriceMap("blazing", newPriceMap);
 
     return {
       updateTime: date,

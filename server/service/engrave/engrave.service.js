@@ -1,20 +1,20 @@
-import { engrave } from "../../data/engrave/engrave.js";
+import { engraveRepository } from "../../repository/engrave/engrave.repository.js";
+import { priceRepository } from "../../repository/price/price.repository.js";
 import { getDate } from "../../utils/date.js";
-import { priceService } from "../price/price.service.js";
 
 class EngraveService {
   async getEngraveData() {
-    const engraveData = await engrave.getEngraveData();
+    const engraveData = await engraveRepository.getEngraveData();
     const date = getDate();
 
-    const oldPriceMap = priceService.getPriceMap("engrave");
+    const oldPriceMap = priceRepository.getPriceMap("engrave");
 
     const { itemList, newPriceMap } = this.#mappingEngraveData(
       engraveData,
       oldPriceMap
     );
 
-    priceService.updatePriceMap("engrave", newPriceMap);
+    priceRepository.updatePriceMap("engrave", newPriceMap);
 
     return {
       updateTime: date,

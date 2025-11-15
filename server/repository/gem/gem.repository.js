@@ -4,7 +4,7 @@ import { GemRequest } from "./request/gem.request.js";
 
 const path = "markets/items";
 
-class Gem {
+class GemRepository {
   async #getGemDataByGrade(grade) {
     const request = new GemRequest(230000, grade, "DESC").get();
 
@@ -46,4 +46,4 @@ class Gem {
   }
 }
 
-export const gem = new Gem();
+export const gemRepository = new GemRepository();
