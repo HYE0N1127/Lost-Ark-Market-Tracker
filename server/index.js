@@ -24,9 +24,6 @@ class App {
 
   initialize() {
     this.#server.use(express.json());
-    this.#server.get("/status", (req, res) => {
-      res.status(200).send("EXPRESS ROUTING OK");
-    });
     try {
       const gemRouter = new GemRouter(new GemController());
       const jewelRouter = new JewelRouter(new JewelController());
