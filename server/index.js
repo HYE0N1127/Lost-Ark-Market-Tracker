@@ -27,7 +27,6 @@ class App {
     this.#server.get("/status", (req, res) => {
       res.status(200).send("EXPRESS ROUTING OK");
     });
-    // 👇 Controller 인스턴스 생성 중 오류를 확인하기 위해 try-catch로 감쌉니다.
     try {
       const gemRouter = new GemRouter(new GemController());
       const jewelRouter = new JewelRouter(new JewelController());
@@ -37,9 +36,7 @@ class App {
       this.#server.use("/jewel", jewelRouter.router);
       this.#server.use("/engrave", engraveRouter.router);
     } catch (error) {
-      // 서버 시작 시 터미널에 이 오류 메시지가 나오는지 확인하세요.
       console.error("라우터 초기화 중 치명적인 오류 발생:", error.message);
-      // 서버를 종료하거나 초기화 실패 상태를 알리는 로직 추가 가능
     }
   }
 }
