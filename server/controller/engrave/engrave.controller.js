@@ -1,15 +1,13 @@
-import { engraveService } from "../../service/engrave/engrave.service.js";
+import { cache } from "../../utils/cache.js";
 
 export class EngraveController {
-  #service = engraveService;
-
   /**
    * @GET ("/engrave")
    */
 
   getEngraveData = async (req, res) => {
     try {
-      const engrave = await this.#service.getEngraveData();
+      const engrave = cache.get("engrave");
 
       if (!engrave) {
         return res.status(404).json({

@@ -4,21 +4,26 @@ import {
   doomfireJewelArray,
 } from "../../constants/jewel.js";
 import { apiKey } from "../../constants/key.js";
-import { JewelRequest } from "./request/jewel.request.js";
 
 const path = "auctions/items";
 
 class JewelRepository {
-  async #getJewelDataByName(name) {
-    const request = new JewelRequest("210000", 4, name, "ASC").get();
+  async getAll() {}
 
+  async #getJewelDataByName(name) {
     const response = await fetch(baseUrl + path, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: apiKey,
       },
-      body: JSON.stringify(request),
+      body: JSON.stringify({
+        CategoryCode: "210000",
+        ItemTier: 4,
+        ItemName: name,
+        PageNo: 1,
+        SortCondition: "ASC",
+      }),
     });
 
     if (!response.ok) {

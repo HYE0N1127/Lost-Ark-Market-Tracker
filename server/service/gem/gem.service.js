@@ -1,83 +1,12 @@
 import { gemRepository } from "../../repository/gem/gem.repository.js";
-import { getDate } from "../../utils/date.js";
-import { priceRepository } from "../../repository/price/price.repository.js";
 
 class GemService {
-  async getUncommonGemData() {
-    const gemData = await gemRepository.getUncommonGemData();
-    const date = getDate();
-
-    const oldPriceMap = priceRepository.getPriceMap("uncommonGem");
-
-    const { itemList, newPriceMap } = this.#mappingGemData(
-      gemData.Items,
-      oldPriceMap
-    );
-
-    priceRepository.updatePriceMap("uncommonGem", newPriceMap);
-
-    return {
-      updateTime: date,
-      itemList: itemList,
-    };
-  }
-
-  async getRareGemData() {
-    const gemData = await gemRepository.getRareGemData();
-    const date = getDate();
-
-    const oldPriceMap = priceRepository.getPriceMap("rareGem");
-
-    const { itemList, newPriceMap } = this.#mappingGemData(
-      gemData.Items,
-      oldPriceMap
-    );
-
-    priceRepository.updatePriceMap("rareGem", newPriceMap);
-
-    return {
-      updateTime: date,
-      itemList: itemList,
-    };
-  }
-
-  async getEpicGemData() {
-    const gemData = await gemRepository.getEpicGemData();
-    const date = getDate();
-
-    const oldPriceMap = priceRepository.getPriceMap("epicGem");
-
-    const { itemList, newPriceMap } = this.#mappingGemData(
-      gemData.Items,
-      oldPriceMap
-    );
-
-    priceRepository.updatePriceMap("epicGem", newPriceMap);
-
-    return {
-      updateTime: date,
-      itemList: itemList,
-    };
-  }
-
-  #mappingGemData(gemData, oldPriceMap) {
+  #mappingGemData(gemData) {
     const itemList = [];
-    const newPriceMap = new Map();
 
-    gemData.forEach((gem) => {
+    gemData.Items.forEach((gem) => {
       let priceDiff = 0;
       let priceDiffPercent = "0%";
-
-      const oldPrice = oldPriceMap.get(gem.Name) || 0;
-      priceDiff = gem.CurrentMinPrice - oldPrice;
-
-      if (oldPrice > 0) {
-        priceDiffPercent = ((priceDiff / oldPrice) * 100).toFixed(1) + "%";
-      } else if (oldPrice === 0 && gem.CurrentMinPrice > 0) {
-        priceDiffPercent = "신규";
-      }
-
-      newPriceMap.set(gem.Name, gem.CurrentMinPrice);
 
       itemList.push({
         itemName: gem.Name ?? "매물이 존재하지 않습니다.",
@@ -89,7 +18,40 @@ class GemService {
       });
     });
 
-    return { itemList, newPriceMap };
+    return itemList;
+  }
+
+  async getAll() {
+    try {
+      const promises = [
+        gemRepository.getUncommonGemData(),
+        gemRepository.getRareGemData(),
+        gemRepository.getEpicGemData(),
+      ];
+      const results = await Promise.allSettled(promises);
+
+      const response = {
+        uncommonGem: [],
+        rareGem: [],
+        epicGem: [],
+      };
+
+      if (results[0].status === "fulfilled") {
+        response.uncommonGem = this.#mappingGemData(results[0].value);
+      }
+
+      if (results[1].status === "fulfilled") {
+        response.rareGem = this.#mappingGemData(results[1].value);
+      }
+
+      if (results[2].status === "fulfilled") {
+        response.epicGem = this.#mappingGemData(results[2].value);
+      }
+
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
 

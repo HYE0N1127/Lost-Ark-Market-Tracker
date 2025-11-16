@@ -1,25 +1,24 @@
 import { baseUrl } from "../constants/base-url.js";
-import { EngraveRequest } from "./request/engrave.request.js";
 
 const path = "markets/items";
 
 class EngraveRepository {
-  async #getMarketDataByPage(pageNo) {
-    const request = new EngraveRequest(
-      "CURRENT_MAX_PRICE",
-      40000,
-      "유물",
-      "ASC",
-      pageNo
-    ).get();
+  async getAll() {}
 
+  async #getMarketDataByPage(pageNo) {
     const response = await fetch(baseUrl + path, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: apiKey,
       },
-      body: JSON.stringify(request),
+      body: JSON.stringify({
+        Sort: "CURRENT_MAX_PRICE",
+        CategoryCode: 40000,
+        ItemGrade: "유물",
+        SortCondition: "ASC",
+        PageNo: pageNo,
+      }),
     });
 
     if (!response.ok) {
