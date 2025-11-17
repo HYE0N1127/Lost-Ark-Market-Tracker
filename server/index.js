@@ -7,6 +7,7 @@ import { cache } from "./utils/cache.js";
 import { engraveService } from "./service/engrave/engrave.service.js";
 import cron from "node-cron";
 import { gemService } from "./service/gem/gem.service.js";
+import { HttpError } from "./utils/http.js";
 
 class App {
   #server;
@@ -24,6 +25,15 @@ class App {
     });
   }
 
+  #getErrorStatus(error) {
+    switch (error.status) {
+      case 503:
+        return "maintenance";
+      default:
+        return "error";
+    }
+  }
+
   async #sync() {
     const keys = ["jewel", "engrave", "gem"];
 
@@ -39,20 +49,31 @@ class App {
       const key = keys[index];
 
       if (result.status === "fulfilled") {
-        // 이전 캐시를 가져오고 가격 비교 이후 캐시에 같이 업데이트 시키기
         cache.set(key, {
-          ...result.value,
+          result: result.value,
           lastUpdatedAt: new Date().toISOString(),
           status: "success",
         });
       }
 
       if (result.status === "rejected") {
-        // 기존에 캐시된 데이터가 있는지 정도는 검증을 해서 이 로직을 실행할지 말지 결정을 해야됨
+        const { reason } = result;
+
+        const prev = cache.get(key);
+
+        if (prev === undefined) {
+          cache.set(key, {
+            result: null,
+            lastUpdatedAt: null,
+            status: this.#getErrorStatus(reason),
+          });
+
+          return;
+        }
+
         cache.set(key, {
-          ...cache.get(key),
-          data: null,
-          status: "error",
+          ...prev,
+          status: this.#getErrorStatus(reason),
         });
       }
     });

@@ -1,7 +1,7 @@
 import { gemRepository } from "../../repository/gem/gem.repository.js";
 
 class GemService {
-  #mappingGemData(gemData) {
+  #mapping(gemData) {
     const itemList = [];
 
     gemData.Items.forEach((gem) => {
@@ -37,15 +37,15 @@ class GemService {
       };
 
       if (results[0].status === "fulfilled") {
-        response.uncommonGem = this.#mappingGemData(results[0].value);
+        response.uncommonGem = this.#mapping(results[0].value);
       }
 
       if (results[1].status === "fulfilled") {
-        response.rareGem = this.#mappingGemData(results[1].value);
+        response.rareGem = this.#mapping(results[1].value);
       }
 
       if (results[2].status === "fulfilled") {
-        response.epicGem = this.#mappingGemData(results[2].value);
+        response.epicGem = this.#mapping(results[2].value);
       }
 
       return response;

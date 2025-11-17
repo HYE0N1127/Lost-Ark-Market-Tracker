@@ -1,7 +1,11 @@
+import {
+  blazingJewelArray,
+  doomfireJewelArray,
+} from "../../constants/jewel.js";
 import { jewelRepository } from "../../repository/jewel/jewel.repository.js";
 
 class JewelService {
-  #mapItems(cheapJewelData) {
+  #mapping(cheapJewelData) {
     return cheapJewelData.map((jewel) => {
       if (!jewel || !jewel.AuctionInfo || !jewel.Name) {
         return {
@@ -24,38 +28,17 @@ class JewelService {
   }
 
   async getAll() {
-    const promises = [
-      jewelRepository.getDoomfireJewelData(),
-      jewelRepository.getBlazingJewelData(),
-    ];
+    const results = await Promise.all([
+      jewelRepository.getAll({ names: doomfireJewelArray }),
+      jewelRepository.getAll({ names: blazingJewelArray }),
+    ]);
 
-    const results = await Promise.allSettled(promises);
+    const [doomfireResult, blazingResult] = results;
 
-    const response = {
-      doomfire: [],
-      blazing: [],
+    return {
+      doomfire: this.#mapping(doomfireResult),
+      blazing: this.#mapping(blazingResult),
     };
-
-    if (results[0].status === "fulfilled") {
-      const jewelResult = results[0].value;
-      const cheapJewelData = jewelResult.map((data) => data.Items[0]);
-
-      response.doomfire = this.#mapItems(cheapJewelData);
-    } else {
-      console.error("Failed to fetch Doomfire data:", results[0].reason);
-    }
-
-    if (results[1].status === "fulfilled") {
-      const jewelResult = results[1].value;
-
-      const cheapJewelData = jewelResult.map((data) => data.Items[0]);
-
-      response.blazing = this.#mapItems(cheapJewelData);
-    } else {
-      console.error("Failed to fetch Blazing data:", results[1].reason);
-    }
-
-    return response;
   }
 }
 

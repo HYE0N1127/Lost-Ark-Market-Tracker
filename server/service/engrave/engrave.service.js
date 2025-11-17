@@ -1,7 +1,7 @@
 import { engraveRepository } from "../../repository/engrave/engrave.repository.js";
 
 class EngraveService {
-  #mappingEngraveData(engraveData) {
+  #mapping(engraveData) {
     const itemList = [];
 
     engraveData.forEach((engrave) => {
@@ -27,7 +27,7 @@ class EngraveService {
         engrave: [],
       };
 
-      const itemList = this.#mappingEngraveData(result);
+      const itemList = this.#mapping(result);
 
       response.engrave = itemList;
       return response;
