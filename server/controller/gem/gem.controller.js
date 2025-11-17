@@ -17,7 +17,8 @@ export class GemController {
         data: gem,
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
+
       return res.status(500).json({
         code: 500,
         message: "서버에서 오류가 발생하였습니다.",

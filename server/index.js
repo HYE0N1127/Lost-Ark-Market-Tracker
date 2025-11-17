@@ -1,13 +1,18 @@
 import express from "express";
+import cron from "node-cron";
+import { config } from "dotenv";
+
 import { GemController } from "./controller/gem/gem.controller.js";
 import { JewelController } from "./controller/jewel/jewel.controller.js";
 import { EngraveController } from "./controller/engrave/engrave.controller.js";
-import { jewelService } from "./service/jewel/jewel.service.js";
+
+import { GemService } from "./service/gem/gem.service.js";
+import { JewelService } from "./service/jewel/jewel.service.js";
+import { EngraveService } from "./service/engrave/engrave.service.js";
+
 import { cache } from "./utils/cache.js";
-import { engraveService } from "./service/engrave/engrave.service.js";
-import cron from "node-cron";
-import { gemService } from "./service/gem/gem.service.js";
-import { HttpError } from "./utils/http.js";
+
+config();
 
 class App {
   #server;
@@ -20,8 +25,8 @@ class App {
     this.initialize();
 
     this.#server.listen(this.#port, () => {
-      console.log(`서버가 http://localhost:${this.#port} 에서 실행 중입니다.`);
-      console.log("서버를 종료하려면 Ctrl+C를 누르세요.");
+      console.info(`서버가 http://localhost:${this.#port} 에서 실행 중입니다.`);
+      console.info("서버를 종료하려면 Ctrl+C를 누르세요.");
     });
   }
 
@@ -38,9 +43,9 @@ class App {
     const keys = ["jewel", "engrave", "gem"];
 
     const promises = [
-      jewelService.getAll(),
-      engraveService.getAll(),
-      gemService.getAll(),
+      new JewelService().getAll(),
+      new EngraveService().getAll(),
+      new GemService().getAll(),
     ];
 
     const results = await Promise.allSettled(promises);
@@ -60,6 +65,8 @@ class App {
         const { reason } = result;
 
         const prev = cache.get(key);
+
+        console.error(reason);
 
         if (prev === undefined) {
           cache.set(key, {

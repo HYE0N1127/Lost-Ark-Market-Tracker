@@ -1,38 +1,38 @@
-import { gemRepository } from "../../repository/gem/gem.repository.js";
+import { GemRepository } from "../../repository/gem/gem.repository.js";
 
-class GemService {
-  #mapping(gemData) {
-    const itemList = [];
+export class GemService {
+  #repository;
 
-    gemData.Items.forEach((gem) => {
+  constructor() {
+    this.#repository = new GemRepository();
+  }
+
+  #map(gems) {
+    return gems.map((gem) => {
       let priceDiff = 0;
       let priceDiffPercent = "0%";
 
-      itemList.push({
+      return {
         itemName: gem.Name ?? "매물이 존재하지 않습니다.",
         image: gem.Icon ?? "",
         price: gem.CurrentMinPrice ?? 0,
         priceDiff: priceDiff,
         priceDiffPercent: priceDiffPercent,
         grade: gem.Grade,
-      });
+      };
     });
-
-    return itemList;
   }
 
   async getAll() {
     const grades = ["고급", "희귀", "영웅"];
-    const results = await gemRepository.getAll({ grades: grades });
+    const results = await this.#repository.getAll({ grades: grades });
 
     const [uncommonResult, rareResult, epicResult] = results;
 
     return {
-      uncommonGem: uncommonResult.Items,
-      rareGem: rareResult.Items,
-      epicGem: epicResult.Items,
+      uncommonGem: this.#map(uncommonResult.Items),
+      rareGem: this.#map(rareResult.Items),
+      epicGem: this.#map(epicResult.Items),
     };
   }
 }
-
-export const gemService = new GemService();

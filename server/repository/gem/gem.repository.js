@@ -1,19 +1,17 @@
-import { baseUrl } from "../../constants/base-url.js";
-import { apiKey } from "../../constants/key.js";
 import { Repository } from "../../utils/http.js";
 
-class GemRepository extends Repository {
+export class GemRepository extends Repository {
   constructor() {
     super();
 
-    this.setBaseUrl(baseUrl);
+    this.setBaseUrl(process.env.SMILEGATE_API_BASE_URL);
   }
 
   async getAll({ grades }) {
     const promises = grades.map((grade) =>
       this.post("/markets/items", {
         headers: {
-          Authorization: apiKey,
+          Authorization: `bearer ${process.env.SMILEGATE_API_KEY}`,
         },
         body: {
           CategoryCode: 230000,
@@ -27,5 +25,3 @@ class GemRepository extends Repository {
     return await Promise.all(promises);
   }
 }
-
-export const gemRepository = new GemRepository();
