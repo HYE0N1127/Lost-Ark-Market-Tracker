@@ -22,36 +22,16 @@ class GemService {
   }
 
   async getAll() {
-    try {
-      const promises = [
-        gemRepository.getUncommonGemData(),
-        gemRepository.getRareGemData(),
-        gemRepository.getEpicGemData(),
-      ];
-      const results = await Promise.allSettled(promises);
+    const grades = ["고급", "희귀", "영웅"];
+    const results = await gemRepository.getAll({ grades: grades });
 
-      const response = {
-        uncommonGem: [],
-        rareGem: [],
-        epicGem: [],
-      };
+    const [uncommonResult, rareResult, epicResult] = results;
 
-      if (results[0].status === "fulfilled") {
-        response.uncommonGem = this.#mapping(results[0].value);
-      }
-
-      if (results[1].status === "fulfilled") {
-        response.rareGem = this.#mapping(results[1].value);
-      }
-
-      if (results[2].status === "fulfilled") {
-        response.epicGem = this.#mapping(results[2].value);
-      }
-
-      return response;
-    } catch (error) {
-      console.log(error);
-    }
+    return {
+      uncommonGem: uncommonResult.Items,
+      rareGem: rareResult.Items,
+      epicGem: epicResult.Items,
+    };
   }
 }
 

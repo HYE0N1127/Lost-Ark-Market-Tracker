@@ -1,52 +1,30 @@
 import { baseUrl } from "../../constants/base-url.js";
 import { apiKey } from "../../constants/key.js";
+import { Repository } from "../../utils/http.js";
 
-const path = "markets/items";
+class GemRepository extends Repository {
+  constructor() {
+    super();
 
-class GemRepository {
-  async #getGemDataByGrade(grade) {
-    const response = await fetch(baseUrl + path, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: apiKey,
-      },
-      body: JSON.stringify({
-        CategoryCode: 230000,
-        ItemGrade: grade,
-        PageNo: 1,
-        SortCondition: "DESC",
-      }),
-    });
-
-    if (!response.ok) {
-      throw new Error(`[${pageNo}페이지] HTTP 에러: ${response.status}`);
-    }
-    return await response.json();
+    this.setBaseUrl(baseUrl);
   }
 
-  async getUncommonGemData() {
-    try {
-      return await this.#getGemDataByGrade("고급");
-    } catch (error) {
-      console.error(`아이템 로드 중 오류 발생: ${error}`);
-    }
-  }
+  async getAll({ grades }) {
+    const promises = grades.map((grade) =>
+      this.post("/markets/items", {
+        headers: {
+          Authorization: apiKey,
+        },
+        body: {
+          CategoryCode: 230000,
+          ItemGrade: grade,
+          PageNo: 1,
+          SortCondition: "DESC",
+        },
+      })
+    );
 
-  async getRareGemData() {
-    try {
-      return await this.#getGemDataByGrade("희귀");
-    } catch (error) {
-      console.error(`아이템 로드 중 오류 발생: ${error}`);
-    }
-  }
-
-  async getEpicGemData() {
-    try {
-      return await this.#getGemDataByGrade("영웅");
-    } catch (error) {
-      console.error(`아이템 로드 중 오류 발생: ${error}`);
-    }
+    return await Promise.all(promises);
   }
 }
 

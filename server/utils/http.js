@@ -50,11 +50,11 @@ export class Repository {
     return response.json();
   }
 
-  async get(path, init) {
+  get(path, init) {
     return this.#request(path, { ...init, method: "GET" });
   }
 
-  async post(path, init) {
+  post(path, init) {
     return this.#request(path, { ...init, method: "POST" });
   }
 }

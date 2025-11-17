@@ -47,6 +47,7 @@ class EngraveRepository {
 
       const remainingPagesData = await Promise.all(promiseArray);
 
+      // flatmap 쓰기
       remainingPagesData.forEach((pageData) => {
         allItems.push(...pageData.Items);
       });
