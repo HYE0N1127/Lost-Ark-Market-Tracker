@@ -1,7 +1,7 @@
 import { cache } from "../../utils/cache.js";
 
 export class JewelController {
-  getJewel = async (req, res) => {
+  getJewel = async (_, res) => {
     try {
       const jewel = cache.get("jewel");
 

@@ -5,7 +5,7 @@ export class EngraveController {
    * @GET ("/engrave")
    */
 
-  getEngraveData = async (req, res) => {
+  getEngraveData = async (_, res) => {
     try {
       const engrave = cache.get("engrave");
 

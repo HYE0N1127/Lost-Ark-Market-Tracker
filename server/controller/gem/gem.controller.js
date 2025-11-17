@@ -1,7 +1,7 @@
 import { cache } from "../../utils/cache.js";
 
 export class GemController {
-  getGem = async (req, res) => {
+  getGem = async (_, res) => {
     try {
       const gem = cache.get("gem");
 
