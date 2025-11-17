@@ -1,4 +1,5 @@
 import { engraveRepository } from "../../repository/engrave/engrave.repository.js";
+import { jewelRepository } from "../../repository/jewel/jewel.repository.js";
 
 class EngraveService {
   #mapping(engraveData) {
@@ -21,19 +22,13 @@ class EngraveService {
   }
 
   async getAll() {
-    try {
-      const result = await engraveRepository.getEngraveData();
-      const response = {
-        engrave: [],
-      };
+    const result = await engraveRepository.getAll();
 
-      const itemList = this.#mapping(result);
+    console.log(result);
 
-      response.engrave = itemList;
-      return response;
-    } catch (error) {
-      console.log(`EngraveService-getAll Error : ${error}`);
-    }
+    return {
+      engrave: this.#mapping(result),
+    };
   }
 }
 

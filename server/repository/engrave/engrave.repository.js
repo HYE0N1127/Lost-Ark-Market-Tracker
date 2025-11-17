@@ -1,61 +1,59 @@
-import { baseUrl } from "../constants/base-url.js";
+import { baseUrl } from "../../constants/base-url.js";
+import { Repository } from "../../utils/http.js";
 
-const path = "markets/items";
+class EngraveRepository extends Repository {
+  constructor() {
+    super();
+    this.setBaseUrl(baseUrl);
+  }
 
-class EngraveRepository {
-  async getAll() {}
+  #calculateTotalPage(totalCount, pageSize) {
+    return Math.ceil(totalCount / pageSize);
+  }
 
-  async #getMarketDataByPage(pageNo) {
-    const response = await fetch(baseUrl + path, {
-      method: "POST",
+  async getAll() {
+    const promises = [];
+    const firstPageData = await this.#getFirstPageData();
+    const totalPages = this.#calculateTotalPage(
+      firstPageData.TotalCount,
+      firstPageData.PageSize
+    );
+
+    Array.from({ length: totalPages }, (_, index) => {
+      promises.push(
+        this.post("markets/items", {
+          headers: {
+            Authorization: apiKey,
+          },
+          body: {
+            Sort: "CURRENT_MAX_PRICE",
+            CategoryCode: 40000,
+            ItemGrade: "유물",
+            SortCondition: "DESC",
+            PageNo: index + 1,
+          },
+        })
+      );
+    });
+
+    const result = await Promise.all(promises);
+
+    return result.flatMap((result) => result.Items);
+  }
+
+  async #getFirstPageData() {
+    return this.post("markets/items", {
       headers: {
-        "Content-Type": "application/json",
         Authorization: apiKey,
       },
-      body: JSON.stringify({
+      body: {
         Sort: "CURRENT_MAX_PRICE",
         CategoryCode: 40000,
         ItemGrade: "유물",
         SortCondition: "ASC",
-        PageNo: pageNo,
-      }),
+        PageNo: 1,
+      },
     });
-
-    if (!response.ok) {
-      throw new Error(`[${pageNo}페이지] HTTP 에러: ${response.status}`);
-    }
-    return await response.json();
-  }
-
-  async getEngraveData() {
-    try {
-      // 총 페이지 계산을 위한 첫 번째 페이지 데이터 불러오기
-      const firstPageData = await this.#getMarketDataByPage(1);
-
-      const totalCount = firstPageData.TotalCount;
-      const pageSize = firstPageData.PageSize;
-      const totalPages = Math.ceil(totalCount / pageSize);
-
-      const allItems = firstPageData.Items;
-
-      const promiseArray = [];
-      if (totalPages > 1) {
-        for (let currentPage = 2; currentPage <= totalPages; currentPage++) {
-          promiseArray.push(this.#getMarketDataByPage(currentPage));
-        }
-      }
-
-      const remainingPagesData = await Promise.all(promiseArray);
-
-      // flatmap 쓰기
-      remainingPagesData.forEach((pageData) => {
-        allItems.push(...pageData.Items);
-      });
-
-      return allItems;
-    } catch (error) {
-      console.error(`아이템 로드 중 오류 발생: ${error}`);
-    }
   }
 }
 
