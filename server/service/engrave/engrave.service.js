@@ -1,4 +1,5 @@
 import { EngraveRepository } from "../../repository/engrave/engrave.repository.js";
+import { cache } from "../../utils/cache.js";
 
 export class EngraveService {
   #repository;
@@ -8,9 +9,23 @@ export class EngraveService {
   }
 
   #map(engraveData) {
+    const cached = cache.get("engrave");
+
     return engraveData.map((engrave) => {
       let priceDiff = 0;
-      let priceDiffPercent = "0%";
+      let priceDiffPercent = "신규";
+
+      if (cached) {
+        const prev = cached.result.engrave.find(
+          (data) => data.itemName === engrave.Name
+        );
+
+        priceDiff = engrave.CurrentMinPrice - prev.price;
+
+        if (prev.price > 0) {
+          priceDiffPercent = ((priceDiff / prev.price) * 100).toFixed(1) + "%";
+        }
+      }
 
       return {
         itemName: engrave.Name ?? "매물이 존재하지 않습니다.",

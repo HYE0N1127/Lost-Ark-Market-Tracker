@@ -25,6 +25,8 @@ export class JewelRepository extends Repository {
 
     const results = await Promise.all(promises);
 
-    return results.map((result) => result.Items[0]);
+    return results.map((result) => {
+      return result.Items.find((item) => item.AuctionInfo.BuyPrice !== null);
+    });
   }
 }
