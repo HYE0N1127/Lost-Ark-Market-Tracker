@@ -1,6 +1,7 @@
 import express from "express";
 import cron from "node-cron";
 import { config } from "dotenv";
+import cors from "cors";
 
 import { GemController } from "./controller/gem/gem.controller.js";
 import { JewelController } from "./controller/jewel/jewel.controller.js";
@@ -87,6 +88,13 @@ class App {
   }
 
   initialize() {
+    this.#server.use(
+      cors({
+        origin: "http://127.0.0.1:5500",
+        credentials: true,
+      })
+    );
+
     this.#server.use(express.json());
 
     const gemController = new GemController();
