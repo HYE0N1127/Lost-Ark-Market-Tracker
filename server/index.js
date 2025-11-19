@@ -97,6 +97,8 @@ class App {
 
     this.#server.use(express.json());
 
+    this.#sync();
+
     const gemController = new GemController();
     const jewelController = new JewelController();
     const engraveController = new EngraveController();
@@ -104,9 +106,6 @@ class App {
     this.#server.get("/gems", gemController.getGem);
     this.#server.get("/jewels", jewelController.getJewel);
     this.#server.get("/engraves", engraveController.getEngraveData);
-
-    // prevent cold-start
-    this.#sync();
 
     cron.schedule("*/1 * * * *", () => this.#sync());
   }
