@@ -1,6 +1,6 @@
 import { Component } from "../../component.js";
 
-export class TabComponent extends Component {
+export class TabHeaderComponent extends Component {
   constructor() {
     super(`        
       <nav class="tab__header">
