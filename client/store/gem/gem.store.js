@@ -4,7 +4,7 @@ import { State } from "../../util/state.js";
 export class GemStore {
   #repository = new GemRepository();
 
-  #state = new State({
+  state = new State({
     updatedAt: String,
     uncommonGem: [],
     rareGem: [],
@@ -12,23 +12,16 @@ export class GemStore {
     status: String,
   });
 
-  get state() {
-    return this.#state.value;
-  }
-
   async fetch() {
-    const state = this.#state;
+    const state = this.state;
     const gems = (await this.#repository.getGem()).data;
 
-    this.#state.value = {
+    this.state.value = {
       ...state,
       updatedAt: gems.lastUpdatedAt,
       uncommonGem: gems.result.uncommonGem,
       rareGem: gems.result.rareGem,
       epicGem: gems.result.epicGem,
-      status: gems.status,
     };
-
-    console.log(this.#state.value);
   }
 }
