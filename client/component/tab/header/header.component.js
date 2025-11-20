@@ -12,7 +12,6 @@ export class TabHeaderComponent extends Component {
       </nav>`);
 
     this.#bind();
-    console.log(this.element);
   }
 
   #bind() {

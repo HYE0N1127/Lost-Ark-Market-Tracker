@@ -4,13 +4,15 @@ import { RepaintableComponent } from "../../component.js";
 import { ItemListComponent } from "../item/list.component.js";
 
 export class GemPageComponent extends RepaintableComponent {
-  #store = new GemStore(new GemRepository());
+  #store;
 
-  constructor() {
+  constructor(store) {
     super(`
       <div class="tab__page">
       </div>
     `);
+
+    this.#store = store;
 
     this.#store.state.subscribe(() => this.#bind());
 

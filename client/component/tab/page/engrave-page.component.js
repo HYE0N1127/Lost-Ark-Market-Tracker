@@ -4,13 +4,15 @@ import { RepaintableComponent } from "../../component.js";
 import { ItemListComponent } from "../item/list.component.js";
 
 export class EngravePageComponent extends RepaintableComponent {
-  #store = new EngraveStore(new EngraveRepository());
+  #store;
 
-  constructor() {
+  constructor(store) {
     super(`
       <div class="tab__page">
       </div>
     `);
+
+    this.#store = store;
 
     this.#store.state.subscribe(() => this.#bind());
 

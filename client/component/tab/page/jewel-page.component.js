@@ -4,13 +4,15 @@ import { RepaintableComponent } from "../../component.js";
 import { ItemListComponent } from "../item/list.component.js";
 
 export class JewelPageComponent extends RepaintableComponent {
-  #store = new JewelStore(new JewelRepository());
+  #store;
 
-  constructor() {
+  constructor(store) {
     super(`
       <div class="tab__page">
       </div>
     `);
+
+    this.#store = store;
 
     this.#store.state.subscribe(() => this.#bind());
 
@@ -37,4 +39,6 @@ export class JewelPageComponent extends RepaintableComponent {
   hide() {
     this.element.classList.add("page-hidden");
   }
+
+  fetch() {}
 }

@@ -19,7 +19,6 @@ export class ItemComponent extends Component {
       `);
 
     this.#bind(item);
-    // change-icon = ▲, ▼ 0원이면 ▼ 사용
   }
 
   /**
@@ -27,7 +26,6 @@ export class ItemComponent extends Component {
    */
 
   #bind(item) {
-    console.log(this.element);
     const iconElement = this.element.querySelector(".price-card__icon");
     const nameElement = this.element.querySelector(".price-card__name");
     const priceElement = this.element.querySelector(".price-card__price");
