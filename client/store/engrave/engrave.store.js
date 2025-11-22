@@ -1,17 +1,14 @@
+import { EngraveRepository } from "../../repository/engrave/engrave.repository.js";
 import { State } from "../../util/state.js";
 
 export class EngraveStore {
-  #repository;
+  #repository = new EngraveRepository();
 
   state = new State({
-    updateAt: String,
+    updateAt: "",
     engrave: [],
-    status: String,
+    status: "",
   });
-
-  constructor(repository) {
-    this.#repository = repository;
-  }
 
   async fetch() {
     const state = this.state;

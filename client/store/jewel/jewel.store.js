@@ -1,18 +1,15 @@
+import { JewelRepository } from "../../repository/jewel/jewel.repository.js";
 import { State } from "../../util/state.js";
 
 export class JewelStore {
-  #repository;
+  #repository = new JewelRepository();
 
   state = new State({
-    updatedAt: String,
+    updatedAt: "",
     doomfire: [],
     blazing: [],
-    status: String,
+    status: "",
   });
-
-  constructor(repository) {
-    this.#repository = repository;
-  }
 
   async fetch() {
     const state = this.state;

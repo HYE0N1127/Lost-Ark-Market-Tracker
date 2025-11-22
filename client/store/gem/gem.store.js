@@ -5,11 +5,11 @@ export class GemStore {
   #repository = new GemRepository();
 
   state = new State({
-    updatedAt: String,
+    updatedAt: "",
     uncommonGem: [],
     rareGem: [],
     epicGem: [],
-    status: String,
+    status: "",
   });
 
   async fetch() {
