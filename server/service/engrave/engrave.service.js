@@ -8,17 +8,15 @@ export class EngraveService {
     this.#repository = new EngraveRepository();
   }
 
-  #map(engraveData) {
+  #map(engraveData, compare) {
     const cached = cache.get("engrave");
 
     return engraveData.map((engrave) => {
       let priceDiff = 0;
-      let priceDiffPercent = "신규";
+      let priceDiffPercent = "0.0%";
 
       if (cached) {
-        const prev = cached.result.engrave.find(
-          (data) => data.itemName === engrave.Name
-        );
+        const prev = compare.find((data) => data.itemName === engrave.Name);
 
         priceDiff = engrave.CurrentMinPrice - prev.price;
 
@@ -40,8 +38,10 @@ export class EngraveService {
   async getAll() {
     const result = await this.#repository.getAll();
 
+    const { engrave } = cache.get("engrave")?.result ?? {};
+
     return {
-      engrave: this.#map(result),
+      engrave: this.#map(result, engrave),
     };
   }
 }

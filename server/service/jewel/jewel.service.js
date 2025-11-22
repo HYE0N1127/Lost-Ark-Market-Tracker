@@ -12,30 +12,16 @@ export class JewelService {
     this.#repository = new JewelRepository();
   }
 
-  #findCachedJewel(type, jewel) {
-    const cached = cache.get("jewel")?.result;
-
-    if (!cached) {
-      return;
-    }
-
-    switch (type) {
-      case "doomfire":
-        return cached.doomfire.find((data) => data.itemName === jewel.Name);
-      case "blazing":
-        return cached.blazing.find((data) => data.itemName === jewel.Name);
-    }
-  }
-
-  #map(jewels, type) {
+  #map(jewels, compare) {
     return jewels.map((jewel) => {
       let priceDiff = 0;
-      let priceDiffPercent = "신규";
+      let priceDiffPercent = "0.0%";
 
-      const prev = this.#findCachedJewel(type, jewel);
+      const prev = compare.find((data) => data.itemName === jewel.Name);
 
       if (prev) {
         priceDiff = jewel.AuctionInfo.BuyPrice - prev.price;
+
         if (prev.price > 0) {
           priceDiffPercent = ((priceDiff / prev.price) * 100).toFixed(1) + "%";
         }
@@ -59,9 +45,11 @@ export class JewelService {
 
     const [doomfireJewels, blazingJewels] = results;
 
+    const { doomfire = [], blazing = [] } = cache.get("jewel")?.result ?? {};
+
     return {
-      doomfire: this.#map(doomfireJewels, "doomfire"),
-      blazing: this.#map(blazingJewels, "blazing"),
+      doomfire: this.#map(doomfireJewels, doomfire),
+      blazing: this.#map(blazingJewels, blazing),
     };
   }
 }
