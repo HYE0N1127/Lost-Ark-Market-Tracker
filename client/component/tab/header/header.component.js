@@ -15,7 +15,6 @@ export class TabHeaderComponent extends Component {
   }
 
   #bind() {
-    // ... 버튼 탐색 로직 (이전과 동일)
     const tabBtns = this.element.querySelectorAll(".tab__navigator");
 
     tabBtns.forEach((button) => {

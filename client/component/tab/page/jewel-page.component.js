@@ -1,5 +1,3 @@
-import { JewelRepository } from "../../../repository/jewel/jewel.repository.js";
-import { JewelStore } from "../../../store/jewel/jewel.store.js";
 import { RepaintableComponent } from "../../component.js";
 import { ItemListComponent } from "../item/list.component.js";
 

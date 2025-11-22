@@ -1,5 +1,3 @@
-import { GemRepository } from "../../../repository/gem/gem.repository.js";
-import { GemStore } from "../../../store/gem/gem.store.js";
 import { RepaintableComponent } from "../../component.js";
 import { ItemListComponent } from "../item/list.component.js";
 

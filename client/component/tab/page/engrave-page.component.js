@@ -1,5 +1,3 @@
-import { EngraveRepository } from "../../../repository/engrave/engrave.repository.js";
-import { EngraveStore } from "../../../store/engrave/engrave.store.js";
 import { RepaintableComponent } from "../../component.js";
 import { ItemListComponent } from "../item/list.component.js";
 
