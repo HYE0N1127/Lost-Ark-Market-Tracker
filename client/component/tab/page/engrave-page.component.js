@@ -21,16 +21,9 @@ export class EngravePageComponent extends RepaintableComponent {
   #bind() {
     this.cleanup();
     const engraveList = this.#store.state.value.engrave;
+    console.log(engraveList);
 
     const engraveListElement = new ItemListComponent(2, engraveList);
     engraveListElement.attachTo(this.element);
-  }
-
-  show() {
-    this.element.classList.remove("page-hidden");
-  }
-
-  hide() {
-    this.element.classList.add("page-hidden");
   }
 }

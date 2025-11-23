@@ -1,0 +1,166 @@
+* {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html {
+  width: 100vw;
+  height: 100vh;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  background-color: black;
+}
+
+a {
+  text-decoration: none;
+}
+
+.tab {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.tab__header {
+  display: flex;
+  border-bottom: 1px solid #3f3f3f;
+  padding: 12px 8px;
+  gap: 4px;
+}
+
+.tab__navigator {
+  display: flex;
+  background-color: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  padding-inline: 4px;
+  font-size: 16px;
+}
+
+.tab__navigator:hover {
+  border-radius: 4px;
+  background-color: #262626;
+}
+
+.tab__navigator.active {
+  border-radius: 4px;
+  background-color: #262626;
+}
+
+.tab__navigator-divider {
+  display: flex;
+  color: #a3a3a3;
+  font-size: 16px;
+  align-items: center;
+  justify-content: center;
+}
+
+.tab__page {
+  display: flex;
+  overflow-y: auto;
+  padding: 24px;
+  justify-content: center;
+  gap: 12px;
+}
+
+.price-card-wrapper {
+  display: grid;
+  align-content: start;
+  grid-auto-rows: max-content;
+  gap: 10px;
+}
+
+/* 한 줄당 한개 (보석/젬용) */
+.cols-1 {
+  grid-template-columns: 1fr;
+}
+
+/* 한 줄당 두개 (각인서용) */
+.cols-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+/* price-card */
+.price-card {
+  display: flex;
+
+  min-width: 400px;
+  max-height: 40px;
+  padding: 8px 16px;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 4px;
+  background-color: #f9fafb0d;
+}
+
+.price-card__wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+}
+
+.price-card__icon {
+  display: flex;
+  align-items: center;
+  width: 24px;
+  aspect-ratio: 1/1;
+  border: none;
+  text-indent: -9999px;
+  outline: none;
+}
+
+.price-card__name {
+  display: flex;
+  align-items: center;
+  color: #f3f4f6;
+  font-size: 18px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+
+.price-card__price {
+  display: flex;
+  align-items: center;
+  color: #f3f4f6;
+  font-size: 20px;
+  font-weight: 600;
+  vertical-align: middle;
+}
+
+.price-card__change-icon {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  transition: color 0.3s;
+}
+
+.price-card__change-rate {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  transition: color 0.3s;
+}
+
+.price-card__change-increase-color {
+  color: #fb2c36;
+}
+
+.price-card__change-decrease-color {
+  color: #00c950;
+}
+
+/* page show-hide 전용 */
+.page-hidden {
+  display: none !important;
+}

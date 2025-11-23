@@ -29,14 +29,4 @@ export class JewelPageComponent extends RepaintableComponent {
     doomfireListElement.attachTo(this.element);
     blazingListElement.attachTo(this.element);
   }
-
-  show() {
-    this.element.classList.remove("page-hidden");
-  }
-
-  hide() {
-    this.element.classList.add("page-hidden");
-  }
-
-  fetch() {}
 }

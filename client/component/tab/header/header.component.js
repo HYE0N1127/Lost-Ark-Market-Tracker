@@ -4,33 +4,26 @@ export class TabHeaderComponent extends Component {
   constructor() {
     super(`        
       <nav class="tab__header">
-        <button class="tab__navigator active" data-tab="engrave">각인서</button>
+        <a class="tab__navigator active" href="/client/pages/engrave/index.html" data-tab="engrave">각인서</a>
         <span class="tab__navigator-divider">|</span>
-        <button class="tab__navigator" data-tab="jewel">보석</button>
+        <a class="tab__navigator" href="/client/pages/jewel/index.html" data-tab="jewel">보석</a>
         <span class="tab__navigator-divider">|</span>
-        <button class="tab__navigator" data-tab="gem">젬</button>
+        <a class="tab__navigator" href="/client/pages/gem/index.html" data-tab="gem">젬</a>
       </nav>`);
 
-    this.#bind();
+    this.#highlightCurrentPage();
   }
 
-  #bind() {
-    const tabBtns = this.element.querySelectorAll(".tab__navigator");
+  #highlightCurrentPage() {
+    const currentPath = window.location.pathname;
+    const links = this.element.querySelectorAll("a");
 
-    tabBtns.forEach((button) => {
-      button.addEventListener("click", () => {
-        tabBtns.forEach((b) => b.classList.remove("active"));
-        button.classList.add("active");
-
-        const targetId = button.getAttribute("data-tab");
-
-        const event = new CustomEvent("tab-changed", {
-          detail: { tabId: targetId },
-          bubbles: true,
-        });
-
-        this.element.dispatchEvent(event);
-      });
+    links.forEach((link) => {
+      link.classList.remove("active");
+      const href = link.getAttribute("href");
+      if (href === currentPath || (currentPath === "/" && href === "/")) {
+        link.classList.add("active");
+      }
     });
   }
 }

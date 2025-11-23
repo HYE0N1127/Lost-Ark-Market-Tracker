@@ -33,12 +33,4 @@ export class GemPageComponent extends RepaintableComponent {
     rareListElement.attachTo(this.element);
     epicListElement.attachTo(this.element);
   }
-
-  show() {
-    this.element.classList.remove("page-hidden");
-  }
-
-  hide() {
-    this.element.classList.add("page-hidden");
-  }
 }
