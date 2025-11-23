@@ -26,7 +26,8 @@ export class EngraveService {
       }
 
       return {
-        itemName: engrave.Name ?? "매물이 존재하지 않습니다.",
+        itemName:
+          engrave.Name?.replace("유물 ", "") ?? "매물이 존재하지 않습니다.",
         image: engrave.Icon ?? "",
         price: engrave.CurrentMinPrice ?? 0,
         priceDiff: priceDiff,
