@@ -1,6 +1,8 @@
 import { TabHeaderComponent } from "../../component/tab/header/header.component.js";
 import { ItemComponent } from "../../component/tab/item/item.component.js";
+import { ItemListWrapperComponent } from "../../component/tab/item/list-wrapper.component.js";
 import { ItemListComponent } from "../../component/tab/item/list.component.js";
+import { TabStatusComponent } from "../../component/tab/item/status.component.js";
 import { JewelPageComponent } from "../../component/tab/page/jewel-page.component.js";
 import { JewelStore } from "../../store/jewel/jewel.store.js";
 
@@ -13,12 +15,17 @@ class JewelPage {
     this.#jewelStore = new JewelStore();
     this.#initUI(root);
 
-    setInterval(this.#polling.bind(this), 60000);
+    setInterval(this.#polling.bind(this), 60 * 1000);
   }
 
   #initUI(root) {
     this.#tab = new TabHeaderComponent();
-    this.#jewelPage = new JewelPageComponent(ItemListComponent, ItemComponent);
+    this.#jewelPage = new JewelPageComponent(
+      ItemListWrapperComponent,
+      ItemListComponent,
+      ItemComponent,
+      TabStatusComponent
+    );
 
     this.#tab.attachTo(root, "afterbegin");
     this.#jewelPage.attachTo(root, "beforeend");

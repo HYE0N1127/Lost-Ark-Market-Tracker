@@ -70,6 +70,14 @@ a {
   padding: 24px;
   justify-content: center;
   gap: 12px;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: flex-start;
+
+  gap: 12px;
 }
 
 .price-card-wrapper {
@@ -163,4 +171,17 @@ a {
 /* page show-hide 전용 */
 .page-hidden {
   display: none !important;
+}
+
+.tab__status {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  align-items: center;
+}
+
+.tab__description {
+  color: #d1d5db;
+  font-size: 12px;
 }

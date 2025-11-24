@@ -7,17 +7,30 @@ export class EngraveStore {
   state = new State({
     updateAt: "",
     engrave: [],
-    status: "",
+    status: undefined,
   });
 
   async fetch() {
-    const state = this.state;
-    const engraves = (await this.#repository.getEngrave()).data;
+    try {
+      const { lastUpdatedAt, result, status } = (
+        await this.#repository.getEngrave()
+      ).data;
 
-    this.state.value = {
-      ...state,
-      updatedAt: engraves.lastUpdatedAt,
-      engrave: engraves.result.engrave,
-    };
+      const { engrave } = result;
+
+      this.state.value = {
+        ...this.state.value,
+        updatedAt: lastUpdatedAt,
+        engrave,
+        status,
+      };
+    } catch (error) {
+      this.state.value = {
+        ...this.state.value,
+        status: "error",
+      };
+    }
+
+    console.log(this.state.value);
   }
 }

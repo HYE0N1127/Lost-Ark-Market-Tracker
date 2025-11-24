@@ -8,18 +8,29 @@ export class JewelStore {
     updatedAt: "",
     doomfire: [],
     blazing: [],
-    status: "",
+    status: undefined,
   });
 
   async fetch() {
-    const state = this.state;
-    const jewels = (await this.#repository.getJewel()).data;
+    try {
+      const { lastUpdatedAt, result, status } = (
+        await this.#repository.getJewel()
+      ).data;
 
-    this.state.value = {
-      ...state,
-      updatedAt: jewels.lastUpdatedAt,
-      doomfire: jewels.result.doomfire,
-      blazing: jewels.result.blazing,
-    };
+      const { blazing, doomfire } = result;
+
+      this.state.value = {
+        ...this.state.value,
+        updatedAt: lastUpdatedAt,
+        doomfire,
+        blazing,
+        status,
+      };
+    } catch (error) {
+      this.state.value = {
+        ...this.state.value,
+        status: "error",
+      };
+    }
   }
 }

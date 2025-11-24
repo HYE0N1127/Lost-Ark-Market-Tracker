@@ -1,6 +1,8 @@
 import { TabHeaderComponent } from "../../component/tab/header/header.component.js";
 import { ItemComponent } from "../../component/tab/item/item.component.js";
+import { ItemListWrapperComponent } from "../../component/tab/item/list-wrapper.component.js";
 import { ItemListComponent } from "../../component/tab/item/list.component.js";
+import { TabStatusComponent } from "../../component/tab/item/status.component.js";
 import { EngravePageComponent } from "../../component/tab/page/engrave-page.component.js";
 import { EngraveStore } from "../../store/engrave/engrave.store.js";
 
@@ -20,8 +22,10 @@ class MainPage {
   #initUI(root) {
     this.#tab = new TabHeaderComponent();
     this.#engravePage = new EngravePageComponent(
+      ItemListWrapperComponent,
       ItemListComponent,
-      ItemComponent
+      ItemComponent,
+      TabStatusComponent
     );
 
     this.#tab.attachTo(root, "afterbegin");

@@ -1,12 +1,15 @@
 import { JewelStore } from "../../../store/jewel/jewel.store.js";
+import { formatTimestamp } from "../../../util/date.js";
 import { RepaintableComponent } from "../../component.js";
 
 export class JewelPageComponent extends RepaintableComponent {
   #store;
+  #wrapperRenderer;
   #listRenderer;
   #itemRenderer;
+  #statusRenderer;
 
-  constructor(listRenderer, itemRenderer) {
+  constructor(wrapperRenderer, listRenderer, itemRenderer, statusRenderer) {
     super(`
       <div class="tab__page">
       </div>
@@ -14,6 +17,8 @@ export class JewelPageComponent extends RepaintableComponent {
 
     this.#listRenderer = listRenderer;
     this.#itemRenderer = itemRenderer;
+    this.#wrapperRenderer = wrapperRenderer;
+    this.#statusRenderer = statusRenderer;
     this.#store = new JewelStore();
 
     this.#store.state.subscribe(() => this.#bind());
@@ -22,23 +27,53 @@ export class JewelPageComponent extends RepaintableComponent {
     this.#bind();
   }
 
+  #getStatus(status) {
+    switch (status) {
+      case "error":
+        return "서버에서 에러가 발생하였습니다. 잠시 후 시도해주세요.";
+      case "maintenance":
+        return "로스트아크 API 서버 점검중입니다. 가장 최근의 데이터를 불러옵니다.";
+      default:
+        return "경매장 시세는 1분 주기로 업데이트 됩니다.";
+    }
+  }
+
+  #getMessage(status, lastUpdate) {
+    switch (status) {
+      case "error":
+        return "데이터 불러오기 실패";
+      default:
+        return `Last Updated: ${formatTimestamp(lastUpdate)}`;
+    }
+  }
+
   #bind() {
     this.cleanup();
-    const doomfireList = this.#store.state.value.doomfire;
-    const blazingList = this.#store.state.value.blazing;
+    const { doomfire, blazing, status, updatedAt } = this.#store.state.value;
+    const messageDescription = this.#getMessage(status, updatedAt);
+    const statusDescription = this.#getStatus(status);
 
     const doomfireListElement = new this.#listRenderer(
       1,
-      doomfireList,
+      doomfire,
       this.#itemRenderer
     );
     const blazingListElement = new this.#listRenderer(
       1,
-      blazingList,
+      blazing,
       this.#itemRenderer
     );
 
-    doomfireListElement.attachTo(this.element);
-    blazingListElement.attachTo(this.element);
+    const listElement = new this.#wrapperRenderer([
+      doomfireListElement,
+      blazingListElement,
+    ]);
+    const statusElement = new this.#statusRenderer(
+      messageDescription,
+      statusDescription
+    );
+
+    listElement.attachTo(this.element);
+    statusElement.attachTo(this.element);
   }
 }
