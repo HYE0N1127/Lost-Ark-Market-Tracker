@@ -17,11 +17,13 @@ export class EngraveService {
 
       if (cached) {
         const prev = compare.find((data) => data.itemName === engrave.Name);
+        if (prev) {
+          priceDiff = engrave.CurrentMinPrice - prev.price;
 
-        priceDiff = engrave.CurrentMinPrice - prev.price;
-
-        if (prev.price > 0) {
-          priceDiffPercent = ((priceDiff / prev.price) * 100).toFixed(1) + "%";
+          if (prev.price > 0) {
+            priceDiffPercent =
+              ((priceDiff / prev.price) * 100).toFixed(1) + "%";
+          }
         }
       }
 

@@ -9,19 +9,30 @@ export class GemStore {
     uncommonGem: [],
     rareGem: [],
     epicGem: [],
-    status: "",
+    status: undefined,
   });
 
   async fetch() {
-    const state = this.state;
-    const gems = (await this.#repository.getGem()).data;
+    try {
+      const { lastUpdatedAt, result, status } = (
+        await this.#repository.getGem()
+      ).data;
 
-    this.state.value = {
-      ...state,
-      updatedAt: gems.lastUpdatedAt,
-      uncommonGem: gems.result.uncommonGem,
-      rareGem: gems.result.rareGem,
-      epicGem: gems.result.epicGem,
-    };
+      const { uncommonGem, rareGem, epicGem } = result;
+
+      this.state.value = {
+        ...this.state.value,
+        updatedAt: lastUpdatedAt,
+        uncommonGem,
+        rareGem,
+        epicGem,
+        status,
+      };
+    } catch (error) {
+      this.state.value = {
+        ...this.state.value,
+        status: "error",
+      };
+    }
   }
 }

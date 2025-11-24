@@ -1,12 +1,14 @@
 import { Component } from "../../component.js";
-import { ItemComponent } from "./item.component.js";
 
 export class ItemListComponent extends Component {
-  constructor(columnCount, itemList) {
+  #itemRenderer;
+  constructor(columnCount, itemList, itemRenderer) {
     super(`
       <div class="price-card-wrapper cols-${columnCount}">
       </div>
     `);
+
+    this.#itemRenderer = itemRenderer;
 
     this.#bind(itemList);
   }
@@ -14,7 +16,7 @@ export class ItemListComponent extends Component {
   #bind(list) {
     const sortedList = list.sort((a, b) => b.price - a.price);
     sortedList.forEach((item) => {
-      const component = new ItemComponent(item);
+      const component = new this.#itemRenderer(item);
       component.attachTo(this.element);
     });
   }
