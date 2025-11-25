@@ -1,7 +1,6 @@
 import { EngraveStore } from "../../../store/engrave/engrave.store.js";
 import { formatTimestamp } from "../../../util/date.js";
 import { RepaintableComponent } from "../../component.js";
-import { ItemListWrapperComponent } from "../item/list-wrapper.component.js";
 
 export class EngravePageComponent extends RepaintableComponent {
   #store;

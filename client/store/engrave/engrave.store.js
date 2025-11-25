@@ -1,7 +1,7 @@
 import { EngraveRepository } from "../../repository/engrave/engrave.repository.js";
 import { State } from "../../util/state.js";
 
-export class EngraveStore {
+class EngraveStore {
   #repository = new EngraveRepository();
 
   state = new State({
@@ -30,7 +30,7 @@ export class EngraveStore {
         status: "error",
       };
     }
-
-    console.log(this.state.value);
   }
 }
+
+export const engraveStore = new EngraveStore();

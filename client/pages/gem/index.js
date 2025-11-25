@@ -1,40 +1,40 @@
+import { EpicGemsComponent } from "../../component/gems/epic-gems.component.js";
+import { GemsStatusComponent } from "../../component/gems/gems-status.component.js";
+import { RareGemsComponent } from "../../component/gems/rare-gems.component.js";
+import { UncommonGemsComponent } from "../../component/gems/uncommon-gems.component.js";
+import { PageComponent, PageItemComponent } from "../../component/page.js";
 import { TabHeaderComponent } from "../../component/tab/header/header.component.js";
-import { ItemComponent } from "../../component/tab/item/item.component.js";
-import { ItemListWrapperComponent } from "../../component/tab/item/list-wrapper.component.js";
-import { ItemListComponent } from "../../component/tab/item/list.component.js";
-import { TabStatusComponent } from "../../component/tab/item/status.component.js";
-import { GemPageComponent } from "../../component/tab/page/gem-page.component.js";
-import { GemStore } from "../../store/gem/gem.store.js";
+import { gemStore } from "../../store/gem/gem.store.js";
+import { jewelStore } from "../../store/jewel/jewel.store.js";
 
 class GemPage {
-  #gemPage;
-  #tab;
-  #gemStore;
-
   constructor(root) {
-    this.#gemStore = new GemStore();
-
     this.#initUI(root);
 
-    setInterval(this.#polling.bind(this), 60 * 1000);
+    gemStore.fetch();
+
+    this.#polling();
   }
 
   #initUI(root) {
-    this.#tab = new TabHeaderComponent();
-    this.#gemPage = new GemPageComponent(
-      ItemListWrapperComponent,
-      ItemListComponent,
-      ItemComponent,
-      TabStatusComponent
+    const page = new PageComponent(PageItemComponent);
+
+    page.addChildren(
+      new UncommonGemsComponent(),
+      new RareGemsComponent(),
+      new EpicGemsComponent()
     );
 
-    this.#tab.attachTo(root, "afterbegin");
-    this.#gemPage.attachTo(root, "beforeend");
+    page.addChildren(new GemsStatusComponent());
+
+    page.attachTo(root, "beforeend");
+
+    new TabHeaderComponent().attachTo(root, "afterbegin");
   }
 
   #polling() {
-    this.#gemStore.fetch();
+    setInterval(() => jewelStore.fetch(), 60 * 1000);
   }
 }
 
-export const gemPage = new GemPage(document.getElementById("tab"));
+export const gemPage = new GemPage(document.getElementById("root"));

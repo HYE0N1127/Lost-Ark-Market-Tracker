@@ -1,39 +1,38 @@
 import { TabHeaderComponent } from "../../component/tab/header/header.component.js";
-import { ItemComponent } from "../../component/tab/item/item.component.js";
-import { ItemListWrapperComponent } from "../../component/tab/item/list-wrapper.component.js";
-import { ItemListComponent } from "../../component/tab/item/list.component.js";
-import { TabStatusComponent } from "../../component/tab/item/status.component.js";
-import { JewelPageComponent } from "../../component/tab/page/jewel-page.component.js";
-import { JewelStore } from "../../store/jewel/jewel.store.js";
+import { PageComponent, PageItemComponent } from "../../component/page.js";
+import { DoomfireJewelsComponent } from "../../component/jewels/doomfire-jewels.component.js";
+import { BlazingJewelsComponent } from "../../component/jewels/blazing-jewels.component.js";
+import { JewelsStatusComponent } from "../../component/jewels/jewels-status.component.js";
+
+import { jewelStore } from "../../store/jewel/jewel.store.js";
 
 class JewelPage {
-  #jewelPage;
-  #tab;
-  #jewelStore;
-
   constructor(root) {
-    this.#jewelStore = new JewelStore();
     this.#initUI(root);
 
-    setInterval(this.#polling.bind(this), 60 * 1000);
+    jewelStore.fetch();
+
+    this.#polling();
   }
 
   #initUI(root) {
-    this.#tab = new TabHeaderComponent();
-    this.#jewelPage = new JewelPageComponent(
-      ItemListWrapperComponent,
-      ItemListComponent,
-      ItemComponent,
-      TabStatusComponent
+    const page = new PageComponent(PageItemComponent);
+
+    page.addChildren(
+      new DoomfireJewelsComponent(),
+      new BlazingJewelsComponent()
     );
 
-    this.#tab.attachTo(root, "afterbegin");
-    this.#jewelPage.attachTo(root, "beforeend");
+    page.addChildren(new JewelsStatusComponent());
+
+    page.attachTo(root, "beforeend");
+
+    new TabHeaderComponent().attachTo(root, "afterbegin");
   }
 
   #polling() {
-    this.#jewelStore.fetch();
+    setInterval(() => jewelStore.fetch(), 60 * 1000);
   }
 }
 
-export const jewelPage = new JewelPage(document.getElementById("tab"));
+export const jewelPage = new JewelPage(document.getElementById("root"));

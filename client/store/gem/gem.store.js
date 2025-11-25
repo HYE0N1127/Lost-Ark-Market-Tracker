@@ -1,7 +1,7 @@
 import { GemRepository } from "../../repository/gem/gem.repository.js";
 import { State } from "../../util/state.js";
 
-export class GemStore {
+class GemStore {
   #repository = new GemRepository();
 
   state = new State({
@@ -36,3 +36,5 @@ export class GemStore {
     }
   }
 }
+
+export const gemStore = new GemStore();

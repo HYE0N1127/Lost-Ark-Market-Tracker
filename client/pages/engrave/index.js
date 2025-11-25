@@ -1,40 +1,33 @@
+import { EngravesStatusComponent } from "../../component/engraves/engraves-status.component.js";
+import { EngravesComponent } from "../../component/engraves/engraves.component.js";
+import { PageComponent, PageItemComponent } from "../../component/page.js";
 import { TabHeaderComponent } from "../../component/tab/header/header.component.js";
-import { ItemComponent } from "../../component/tab/item/item.component.js";
-import { ItemListWrapperComponent } from "../../component/tab/item/list-wrapper.component.js";
-import { ItemListComponent } from "../../component/tab/item/list.component.js";
-import { TabStatusComponent } from "../../component/tab/item/status.component.js";
-import { EngravePageComponent } from "../../component/tab/page/engrave-page.component.js";
-import { EngraveStore } from "../../store/engrave/engrave.store.js";
+import { engraveStore } from "../../store/engrave/engrave.store.js";
 
 class MainPage {
-  #engravePage;
-  #tab;
-  #engraveStore;
-
   constructor(root) {
-    this.#engraveStore = new EngraveStore();
-
     this.#initUI(root);
 
-    setInterval(this.#polling.bind(this), 60 * 1000);
+    engraveStore.fetch();
+
+    this.#polling();
   }
 
   #initUI(root) {
-    this.#tab = new TabHeaderComponent();
-    this.#engravePage = new EngravePageComponent(
-      ItemListWrapperComponent,
-      ItemListComponent,
-      ItemComponent,
-      TabStatusComponent
-    );
+    const page = new PageComponent(PageItemComponent);
 
-    this.#tab.attachTo(root, "afterbegin");
-    this.#engravePage.attachTo(root, "beforeend");
+    page.addChildren(new EngravesComponent());
+
+    page.addChildren(new EngravesStatusComponent());
+
+    page.attachTo(root, "beforeend");
+
+    new TabHeaderComponent().attachTo(root, "afterbegin");
   }
 
   #polling() {
-    this.#engraveStore.fetch();
+    setInterval(() => this.engraveStore.fetch(), 60 * 1000);
   }
 }
 
-export const mainPage = new MainPage(document.getElementById("tab"));
+export const mainPage = new MainPage(document.getElementById("root"));

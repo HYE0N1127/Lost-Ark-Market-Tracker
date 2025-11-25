@@ -1,7 +1,7 @@
 import { JewelRepository } from "../../repository/jewel/jewel.repository.js";
 import { State } from "../../util/state.js";
 
-export class JewelStore {
+class JewelStore {
   #repository = new JewelRepository();
 
   state = new State({
@@ -27,6 +27,7 @@ export class JewelStore {
         status,
       };
     } catch (error) {
+      console.log(error);
       this.state.value = {
         ...this.state.value,
         status: "error",
@@ -34,3 +35,5 @@ export class JewelStore {
     }
   }
 }
+
+export const jewelStore = new JewelStore();
